@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Pomodoro Timer</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Pomodoro Timer</h1>
+        <button id="start-25-5">Start 25/5</button>
+        <button id="start-50-10">Start 50/10</button>
+        <div id="timer">00:00</div>
+    </div>
+
+    <script>
+        let timer;
+        let studyTime;
+        let breakTime;
+
+        document.getElementById('start-25-5').addEventListener('click', function() {
+            studyTime = 25 * 60;
+            breakTime = 5 * 60;
+            startTimer(studyTime, breakTime);
+        });
+
+        document.getElementById('start-50-10').addEventListener('click', function() {
+            studyTime = 50 * 60;
+            breakTime = 10 * 60;
+            startTimer(studyTime, breakTime);
+        });
+
+        function startTimer(studyTime, breakTime) {
+            let time = studyTime;
+            timer = setInterval(function() {
+                let minutes = Math.floor(time / 60);
+                let seconds = time % 60;
+                document.getElementById('timer').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                time--;
+
+                if (time < 0) {
+                    clearInterval(timer);
+                    time = breakTime;
+                    timer = setInterval(function() {
+                        let minutes = Math.floor(time / 60);
+                        let seconds = time % 60;
+                        document.getElementById('timer').textContent = `Break: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                        time--;
+                        if (time < 0) {
+                            clearInterval(timer);
+                        }
+                    }, 1000);
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
